@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: PythonCDT
+Version: 0.0.1
+Summary: Test
+Author: Leica Geosystems
+Author-email: 
+Requires-Python: >=3.6
+Provides-Extra: test
+License-File: LICENSE
