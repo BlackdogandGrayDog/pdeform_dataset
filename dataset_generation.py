@@ -6,7 +6,7 @@ import os
 
 
 if __name__ == "__main__":
-    base_root = "./mono_datasets/monocular_deformable_1/"
+    base_root = "./mono_datasets/monocular_deformable_2/"
     base_root = base_root.rstrip("/")
     compute_dense_flow_for_sequence(base_root)
     length = 23
@@ -16,7 +16,7 @@ if __name__ == "__main__":
         stride=length-2,
         length=length,
         start_frame=0,
-        max_frames=700,
+        max_frames=650,
     )
 
     # Optionally batch-generate datasets from detected trajectory folders

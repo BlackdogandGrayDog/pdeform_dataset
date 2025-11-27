@@ -199,7 +199,7 @@ def compute_dense_flow_for_left_sequence(base_path):
 # # Example usage
 # main_cloth_blow_flow("../deformable_slam/deformation_datasets/cloth_datasets/clothblow_test")
 
-compute_dense_flow_for_sequence("./mono_datasets/monocular_deformable_1/")
+# compute_dense_flow_for_sequence("./mono_datasets/monocular_deformable_1/")
 
 # compute_dense_flow_for_left_sequence("../deformable_slam/stereo_datasets/stereo_deformable_12")
 
