@@ -732,8 +732,8 @@ def dataset_generation(traj_num, start_frame_index, end_frame_index, grid_size, 
 
     # === Feature Tracking: I_2 → I_1 → I_0 ===
     print("Using Mast3r for feature tracking.")
-    model_name = "./checkpoints/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth"
-    # model_name = "naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric"
+    # model_name = "./checkpoints/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth"
+    model_name = "naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric"
     model = AsymmetricMASt3R.from_pretrained(model_name).to('cuda')
 
     # Track from I_2 → I_1

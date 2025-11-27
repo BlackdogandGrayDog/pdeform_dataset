@@ -47,10 +47,10 @@ def load_model(model_path, device, verbose=True):
 
 class AsymmetricCroCo3DStereo (
     CroCoNet,
-    # huggingface_hub.PyTorchModelHubMixin,
-    # library_name="dust3r",
-    # repo_url="https://github.com/naver/dust3r",
-    # tags=["image-to-3d"],
+    huggingface_hub.PyTorchModelHubMixin,
+    library_name="dust3r",
+    repo_url="https://github.com/naver/dust3r",
+    tags=["image-to-3d"],
 ):
     """ Two siamese encoders, followed by two decoders.
     The goal is to output 3d points directly, both images in view1's frame
