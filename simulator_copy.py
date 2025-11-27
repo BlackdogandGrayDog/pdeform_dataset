@@ -157,19 +157,20 @@ def process_dataset_copy_shift_minus_one_and_rename(source_folder, dest_folder, 
 # process_dataset_copy_shift_minus_one_and_rename(source_folder, destination_folder, frame_start, frame_end)
 
 
-# === Continued Usage for Simulator ===
-base_source = "./monocular_datasets/monocular_deformable_5"
+def generate_sequences(base_source, stride, length, start_frame, max_frames, start_index=1):
+    for start in range(start_frame, max_frames - length + 1, stride):
+        end = start + length - 1
+        dest_folder = f"{base_source}{start_index:03d}/"
+        print(f"Generating {dest_folder} from {start} to {end}")
+        process_dataset_copy_shift_minus_one_and_rename(base_source, dest_folder, start, end)
+        start_index += 1
 
-stride = 31
-length = 33
-start_frame = 0
-max_frames = 500
-
-# You already have 47 sequences (001–047), so start from 48
-count = 1
-for start in range(start_frame, max_frames - length + 1, stride):
-    end = start + length - 1
-    dest_folder = f"{base_source}{count:03d}/"
-    print(f"Generating {dest_folder} from {start} to {end}")
-    process_dataset_copy_shift_minus_one_and_rename(base_source, dest_folder, start, end)
-    count += 1
+# Example call:
+# generate_sequences(
+#     base_source="./mono_datasets/monocular_deformable_1",
+#     stride=21,
+#     length=23,
+#     start_frame=0,
+#     max_frames=30,
+#     start_index=1,
+# )

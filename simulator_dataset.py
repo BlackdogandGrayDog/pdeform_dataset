@@ -704,9 +704,9 @@ def create_and_save_dataset_eval(world_positions, image_positions, patched_flow,
     print(f"Stacked tensors saved to {tensor_output_file}")
 
 # Generates a SLAM dataset by performing feature tracking, world position generation, and dataset saving.
-def dataset_generation(traj_num, start_frame_index, end_frame_index, grid_size, patch_size, train_eval = "train", extra_grid_size=12):
+def dataset_generation(traj_num, start_frame_index, end_frame_index, grid_size, patch_size, train_eval = "train", extra_grid_size=12, base_source="./mono_datasets/"):
     # Define paths, camera intrinsics, and baseline distance
-    data_folder = f'./monocular_datasets/monocular_deformable_{traj_num}/'
+    data_folder = f'{base_source}monocular_deformable_{traj_num}/'
     prefix = detect_prefix(data_folder)  # Auto-detect prefix
     print(f"Using Prefix: {prefix}")
 
@@ -832,25 +832,44 @@ def copy_tensor_folder(traj_num_str, output_folder):
 
     print(f"✅ Copied {tensor_src} → {tensor_dst}")
 
-# Automatically generate datasets for all trajectories and grid sizes
-def auto_generate_datasets():
-    # Define constants
-    start_frame_index = 2
-    end_frame_index = 20
-    patch_size = 6
-    train_eval = "eval"
-    extra_grid_size = 12
-    
-    # Loop over trajectory numbers 7 to 12
-    for traj_num in range(5, 6):
-        traj_num_str = str(traj_num)  # Convert to string if needed
-        # Loop over different grid sizes
-        for grid_size in [extra_grid_size]:
-            print(f"Generating dataset for Trajectory {traj_num}, Grid Size {grid_size}...")
-            output_folder = dataset_generation(traj_num_str, start_frame_index, end_frame_index, grid_size, patch_size, train_eval = train_eval, extra_grid_size=extra_grid_size)
-            if train_eval == "train":
-                copy_tensor_folder(traj_num_str, output_folder)
 
-if __name__ == "__main__":
-    # Automatically generate datasets for all trajectories and grid sizes
-    auto_generate_datasets()
+def detect_traj_nums(base_source):
+    import os, re
+    root = base_source.rstrip('/')
+    pattern = re.compile(r'^monocular_deformable_(\d{4,5})$')
+    traj_nums = []
+    for name in os.listdir(root):
+        if not os.path.isdir(os.path.join(root, name)):
+            continue
+        m = pattern.match(name)
+        if m:
+            traj_nums.append(int(m.group(1)))
+    return sorted(traj_nums)
+
+
+# Automatically generate datasets for all trajectories and grid sizes
+def auto_generate_datasets(base_source="./mono_datasets/", start_frame_index=2, end_frame_index=22,
+                           patch_size=6, train_eval="eval", extra_grid_size=12):
+    traj_list = detect_traj_nums(base_source)
+    for traj_num in traj_list:
+        traj_num_str = str(traj_num)
+        grid_size = extra_grid_size
+        print(f"Generating dataset for Trajectory {traj_num}, Grid Size {grid_size}...")
+        output_folder = dataset_generation(traj_num_str, start_frame_index, end_frame_index, grid_size, patch_size,
+                                           train_eval=train_eval, extra_grid_size=extra_grid_size, base_source=base_source)
+        if train_eval == "train":
+            copy_tensor_folder(traj_num_str, output_folder)
+
+# if __name__ == "__main__":
+#     base_source = "./mono_datasets/"
+#     start_frame_index = 2
+#     end_frame_index = 22
+#     patch_size = 6
+#     train_eval = "train"
+#     extra_grid_size = 20
+#     auto_generate_datasets(base_source=base_source,
+#                            start_frame_index=start_frame_index,
+#                            end_frame_index=end_frame_index,
+#                            patch_size=patch_size,
+#                            train_eval=train_eval,
+#                            extra_grid_size=extra_grid_size)
